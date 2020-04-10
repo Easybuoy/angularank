@@ -1,6 +1,12 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
+    <h1>Mee</h1>
+    <div>
+       {{ allOrganizations }}
+      <h1 v-for="item in allOrganizations" :key="item.id">
+        {{ item.login }}
+      </h1>
+    </div>
   </div>
 </template>
 
@@ -19,6 +25,7 @@ export default {
   created() {
     console.log('aa');
     this.getOrganizations();
+    console.log(this.allOrganizations, ' ye');
   }
 };
 </script>

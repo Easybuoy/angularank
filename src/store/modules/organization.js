@@ -3,11 +3,11 @@ import axios from 'axios';
 import { formatURL, formatContributorURL } from '../../utils';
 
 const state = {
-  organization: []
+  organizations: []
 };
 
 const getters = {
-  allOrganizations: currentState => currentState.organization
+  allOrganizations: currentState => currentState.organizations
 };
 
 const actions = {
@@ -115,12 +115,14 @@ const actions = {
     }, Object.create(null));
 
     console.log(groupedContributors);
-
+    commit('setOrganizations', groupedContributors)
     return contributors;
   }
 };
 
-const mutations = {};
+const mutations = {
+  setOrganizations: (state, organizations) => (state.organizations = organizations)
+};
 
 export default {
   state,
