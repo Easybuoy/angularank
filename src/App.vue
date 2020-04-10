@@ -1,17 +1,17 @@
 <template>
-    <h1>Hii</h1>
+  <v-app>
+    <router-view></router-view>
+  </v-app>
 </template>
 
 <script>
-
 export default {
   name: 'App',
 
-  components: {
-  },
+  components: {},
 
   data: () => ({
     //
-  }),
+  })
 };
 </script>
