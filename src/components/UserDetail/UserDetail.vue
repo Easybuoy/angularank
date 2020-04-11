@@ -1,14 +1,24 @@
-<template> </template>
+<template>
+  <div>
+    {{ this.userDetail }}
+  </div>
+</template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'User-Details',
- 
   created() {
-    this.login = this.$route.params.id;
-    // this.getMovieDetails();
+    const { login } = this.$route.params;
+    this.getUserDetail(login);
+    console.log(this.userDetail, 'userd');
+  },
+  computed: {
+    ...mapGetters(['userDetail'])
+  },
+  methods: {
+    ...mapActions(['getUserDetail'])
   }
 };
 </script>

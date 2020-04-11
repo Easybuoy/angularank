@@ -7,17 +7,16 @@ const state = {
 };
 
 const getters = {
-  userDetail: currentState => currentState.userDetail
+  userDetail: (currentState) => currentState.userDetail,
 };
 
 const actions = {
   async getUserDetail({ commit }, login) {
-    console.log(id)
-    axios.get(`https://api.github.com/users/${login}`)
-    .then(res => console.log(res))
-    .catch(err => console.log(err))
-  },
-  
+    // console.log(login);
+    axios
+      .get(`https://api.github.com/users/${login}`)
+      .then((res) => commit('setUserDetail', res.data))
+      .catch((err) => console.log(err));
   }
 };
 
