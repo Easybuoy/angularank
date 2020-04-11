@@ -1,8 +1,10 @@
 <template>
   <v-container class="grey lighten-5">
+    <Dropdown />
+
     <v-row no-gutters justify="center">
       <div v-for="item in allOrganizations" :key="item.id" class="card">
-        <router-link :to="'/serie/' + item.id">
+        <router-link :to="'/user/' + item.login">
           <v-card class="mx-auto " max-width="344" outlined>
             <v-list-item three-line>
               <v-list-item-content>
@@ -25,6 +27,8 @@
 // @ is an alias to /src
 import { mapGetters, mapActions } from 'vuex';
 
+import Dropdown from '@/components/common/Dropdown.vue';
+
 export default {
   name: 'Home',
   computed: {
@@ -34,7 +38,10 @@ export default {
     ...mapActions(['getOrganizations'])
   },
   created() {
-    this.getOrganizations();
+    // this.getOrganizations();
+  },
+  components: {
+    Dropdown
   }
 };
 </script>
@@ -45,6 +52,6 @@ a {
 }
 
 .card {
-  margin: 1rem;
+  margin: 0.5rem;
 }
 </style>

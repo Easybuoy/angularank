@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { formatURL, formatContributorURL } from '../../utils';
+import { formatURL, extractURL, fetchURL } from '../../utils';
 
 const state = {
   organizations: []
@@ -20,7 +20,7 @@ const actions = {
         headers: { Authorization: 'Token 097de95c321b3d1042695472de58c2c1fa32e3ac ' }
       }
     );
-    contributorsUrl = contributorsUrl.concat(formatContributorURL(response.data));
+    contributorsUrl = contributorsUrl.concat(extractURL(response.data, 'contributors_url'));
     console.log(contributorsUrl);
 
     const response2 = await axios.get(
@@ -29,7 +29,7 @@ const actions = {
         headers: { Authorization: 'Token 097de95c321b3d1042695472de58c2c1fa32e3ac ' }
       }
     );
-    contributorsUrl = contributorsUrl.concat(formatContributorURL(response2.data));
+    contributorsUrl = contributorsUrl.concat(extractURL(response2.data, 'contributors_url'));
     console.log(contributorsUrl);
     localStorage.setItem('contributorsUrl', JSON.stringify(contributorsUrl));
     console.log(contributorsUrl.length);
@@ -57,11 +57,6 @@ const actions = {
     //     console.log(formattedURL);
     //     console.log(res.data);
     //   });
-
-    const fetchURL = url =>
-      axios.get(url, {
-        headers: { Authorization: 'Token 097de95c321b3d1042695472de58c2c1fa32e3ac ' }
-      });
 
     const promiseArray = contributorsUrl.map(fetchURL);
     let contributorsData = [];
@@ -104,6 +99,8 @@ const actions = {
     console.log(contributors);
     console.log(contributors.length);
 
+    const free = contributors.filter(item => item.login == 'free-easy');
+    console.log(free);
     let groupedContributors = [];
 
     contributors.forEach(function(o) {
@@ -116,8 +113,28 @@ const actions = {
 
     groupedContributors = groupedContributors.sort((a, b) => b.contributions - a.contributions);
     console.log(groupedContributors);
+    const extractedUserUrl = extractURL(groupedContributors, 'url');
+
+    // console.log(extractedUserUrl);
     commit('setOrganizations', groupedContributors);
-    return contributors;
+    const promiseArray = extractedUserUrl.map(fetchURL);
+
+    axios.all(promiseArray.map(p => p.catch(error => null))).then(data => {
+      console.log(data);
+      // localStorage.setItem('updatedContributors', JSON.stringify(data))
+      data.forEach((item, i) => {
+        // console.log(item.data.login, groupedContributors[i].login);
+        if (item.data.login && groupedContributors[i].login) {
+          if (item.data.login == groupedContributors[i].login) {
+            console.log('a');
+          }
+        }
+
+        // console.log(data, 'adasda');
+      });
+
+      return contributors;
+    });
   }
 };
 

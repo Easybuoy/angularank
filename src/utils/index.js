@@ -1,4 +1,5 @@
 import parse from 'parse-link-header';
+import axios from 'axios';
 
 const formatURL = (linkHeader, url) => {
   let startingPoint = 1;
@@ -16,14 +17,21 @@ const formatURL = (linkHeader, url) => {
   return formatURLResponse;
 };
 
-const formatContributorURL = data => {
+const extractURL = (data, property) => {
   let response = [];
 
   data.forEach(item => {
-    response = response.concat(item.contributors_url);
+    if (item[property]) {
+      response = response.concat(item[property]);
+    }
   });
 
   return response;
 };
 
-export { formatURL, formatContributorURL };
+const fetchURL = url =>
+  axios.get(url, {
+    headers: { Authorization: 'Token 097de95c321b3d1042695472de58c2c1fa32e3ac ' }
+  });
+
+export { formatURL, extractURL, fetchURL };
