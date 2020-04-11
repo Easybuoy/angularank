@@ -104,7 +104,7 @@ const actions = {
     console.log(contributors);
     console.log(contributors.length);
 
-    const groupedContributors = [];
+    let groupedContributors = [];
 
     contributors.forEach(function(o) {
       if (!this[o.login]) {
@@ -114,8 +114,9 @@ const actions = {
       this[o.login].contributions += o.contributions;
     }, Object.create(null));
 
+    groupedContributors = groupedContributors.sort((a, b) => b.contributions - a.contributions);
     console.log(groupedContributors);
-    commit('setOrganizations', groupedContributors)
+    commit('setOrganizations', groupedContributors);
     return contributors;
   }
 };
