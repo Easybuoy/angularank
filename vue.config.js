@@ -1,5 +1,6 @@
 module.exports = {
-  transpileDependencies: [
-    'vuetify',
-  ],
+  transpileDependencies: ['vuetify'],
+  chainWebpack: config => {
+    config.module.rules.delete('eslint');
+  }
 };
