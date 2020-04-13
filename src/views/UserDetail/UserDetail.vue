@@ -20,8 +20,8 @@
             :lazy-src="userDetail.avatar_url"
             aspect-ratio="1"
             class="grey lighten-2"
-            width="100%"
-            height="300"
+            width="400"
+            height="400"
           ></v-img>
         </div>
 
@@ -78,7 +78,7 @@
               <Divider />
             </div>
 
-            <div class="full-width" v-show="userDetail.blog !== null">
+            <div class="full-width" v-show=" userDetail.blog !== ''">
               <h4 class="user-detail-container list-item grey--text text--darken-2">
                 <span class="red--text text--darken-4">Blog:&nbsp;</span>
                 {{ userDetail.blog }}
@@ -159,7 +159,7 @@ export default {
 };
 </script>
 
-<style >
+<style scoped>
 .container {
   display: flex;
   flex-wrap: wrap;
@@ -169,6 +169,9 @@ export default {
 
 .user-img {
   width: 35%;
+  margin: 0 auto;
+  /* display: flex;
+  justify-content: center; */
 }
 
 .user-detail {

@@ -1,11 +1,12 @@
 <template>
   <div class="container">
     <div
-      class="v-card v-card--shaped v-sheet theme--light"
+      class="v-card v-card--shaped v-sheet theme--light card"
       subtitle="true"
       supportingtext="true"
       style="width: 342px;"
       v-for="repo in repositories"
+      :key="repo.id"
     >
       <div class="v-card__progress">
         <div
@@ -28,11 +29,13 @@
       </div>
       <!---->
       <div class="v-card__title">
-        Card title
+        <v-icon medium color="red darken-4">mdi-github</v-icon>
+        &nbsp;&nbsp;
+        {{ repo.name }}
       </div>
-      <div class="v-card__subtitle">Secondary text</div>
+      <div class="v-card__subtitle">{{ repo.language }}</div>
       <div class="v-card__text">
-        Greyhound divisively hello coldly wonderfully marginally far upon excluding.
+        {{ repo.description }}
       </div>
     </div>
   </div>
@@ -53,11 +56,15 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .container {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  justify-content: space-between;
+  justify-content: center;
+}
+
+.card {
+  margin: 0.5rem;
 }
 </style>
