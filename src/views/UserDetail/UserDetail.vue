@@ -21,7 +21,7 @@
             aspect-ratio="1"
             class="grey lighten-2"
             width="400"
-            height="400"
+            height="450"
           ></v-img>
         </div>
 
@@ -127,7 +127,7 @@
       </div>
     </div>
 
-    <Repositories v-if="repositories.length > 0" :repositories="repositories" />
+    <Repositories v-if="repositories.length > 0" :repositories="repositories" :login="userDetail.login" />
   </div>
 </template>
 
@@ -168,10 +168,10 @@ export default {
 }
 
 .user-img {
-  width: 35%;
+  width: 25%;
   margin: 0 auto;
-  /* display: flex;
-  justify-content: center; */
+  display: flex;
+  justify-content: center;
 }
 
 .user-detail {

@@ -1,5 +1,6 @@
 <template>
-  <div class="container">
+  <div class="repo-container">
+    <h1 class="red--text text--darken-4">Repositories</h1>
     <div
       class="v-card v-card--shaped v-sheet theme--light card"
       subtitle="true"
@@ -16,10 +17,7 @@
           class="v-progress-linear v-progress-linear--absolute theme--light"
           style="height: 4px;"
         >
-          <div
-            class="v-progress-linear__background"
-            style="opacity: 0.3; left: 0%; width: 100%;"
-          ></div>
+          <div class="v-progress-linear__background" style="opacity: 0.3; left: 0%; width: 100%;"></div>
           <div class="v-progress-linear__buffer"></div>
           <div class="v-progress-linear__indeterminate v-progress-linear__indeterminate--active">
             <div class="v-progress-linear__indeterminate long"></div>
@@ -29,14 +27,17 @@
       </div>
       <!---->
       <div class="v-card__title">
-        <v-icon medium color="red darken-4">mdi-github</v-icon>
-        &nbsp;&nbsp;
-        {{ repo.name }}
+        <v-icon medium color="red darken-4 ">mdi-github</v-icon>&nbsp;&nbsp;
+        <span class="heading-font">{{ repo.name }}</span>
       </div>
-      <div class="v-card__subtitle">{{ repo.language }}</div>
-      <div class="v-card__text">
-        {{ repo.description }}
-      </div>
+      <div class="v-card__subtitle red--text text--darken-2 sub-font">{{ repo.language }}</div>
+      <div class="v-card__text sub-font">{{ repo.description }}</div>
+
+      <v-card-actions>
+        <router-link :to="'/repo/' + login + '/' + repo.name">
+          <v-btn text color="red darken-4">Details</v-btn>
+        </router-link>
+      </v-card-actions>
     </div>
   </div>
 </template>
@@ -48,6 +49,10 @@ export default {
     repositories: {
       type: Array,
       required: true
+    },
+    login: {
+      type: String,
+      required: true
     }
   },
   created() {
@@ -57,7 +62,7 @@ export default {
 </script>
 
 <style scoped>
-.container {
+.repo-container {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
@@ -66,5 +71,23 @@ export default {
 
 .card {
   margin: 0.5rem;
+}
+
+.heading-font {
+  font-size: 1.2rem;
+  font-family: 'Concert One', cursive;
+}
+
+.sub-font {
+  font-family: 'Mallanna', sans-serif;
+  font-size: 1rem;
+}
+
+h1 {
+  font-family: 'Concert One', cursive;
+  text-align: center;
+  width: 100%;
+  text-transform: uppercase;
+  margin: 1.5rem 0;
 }
 </style>
