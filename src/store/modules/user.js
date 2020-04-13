@@ -6,7 +6,7 @@ const state = {
   userDetail: {},
   loading: false,
   error: null,
-  repositories
+  repositories: []
 };
 
 const getters = {
@@ -29,6 +29,7 @@ const actions = {
         axiosWithAuth()
           .get(res.data.repos_url)
           .then(response => {
+            console.log(response.data);
             commit('setRepositories', response.data);
           })
           .catch(error => console.log(error));

@@ -33,7 +33,7 @@
               <Divider />
             </div>
 
-            <div class="full-width">
+            <div class="full-width" v-show="userDetail.bio !== null">
               <h4 class="user-detail-container list-item grey--text text--darken-2">
                 <span class="red--text text--darken-4">Bio:&nbsp;</span>
                 {{ userDetail.bio }}
@@ -42,7 +42,7 @@
               <Divider />
             </div>
 
-            <div class="full-width">
+            <div class="full-width" v-show="userDetail.company !== null">
               <h4 class="user-detail-container list-item grey--text text--darken-2">
                 <span class="red--text text--darken-4">Company:&nbsp;</span>
                 {{ userDetail.company }}
@@ -78,7 +78,7 @@
               <Divider />
             </div>
 
-            <div class="full-width">
+            <div class="full-width" v-show="userDetail.blog !== null">
               <h4 class="user-detail-container list-item grey--text text--darken-2">
                 <span class="red--text text--darken-4">Blog:&nbsp;</span>
                 {{ userDetail.blog }}
@@ -126,6 +126,8 @@
         </div>
       </div>
     </div>
+
+    <Repositories v-if="repositories.length > 0" :repositories="repositories" />
   </div>
 </template>
 
@@ -133,6 +135,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import Spinner from '@/components/common/Spinner.vue';
 import Divider from '@/components/common/Divider.vue';
+import Repositories from '@/components/Repositories/Repositories.vue';
 
 export default {
   name: 'User-Details',
@@ -143,19 +146,20 @@ export default {
     console.log(this.userDetail, 'userd');
   },
   computed: {
-    ...mapGetters(['userDetail', 'loading', 'error'])
+    ...mapGetters(['userDetail', 'loading', 'error', 'repositories'])
   },
   methods: {
     ...mapActions(['getUserDetail'])
   },
   components: {
     Spinner,
-    Divider
+    Divider,
+    Repositories
   }
 };
 </script>
 
-<style>
+<style >
 .container {
   display: flex;
   flex-wrap: wrap;
