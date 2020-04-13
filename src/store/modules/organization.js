@@ -99,8 +99,6 @@ const actions = {
     console.log(contributors);
     console.log(contributors.length);
 
-    const free = contributors.filter(item => item.login == 'free-easy');
-    console.log(free);
     let groupedContributors = [];
 
     contributors.forEach(function(o) {
@@ -111,30 +109,46 @@ const actions = {
       this[o.login].contributions += o.contributions;
     }, Object.create(null));
 
-    groupedContributors = groupedContributors.sort((a, b) => b.contributions - a.contributions);
-    console.log(groupedContributors);
+    groupedContributors = groupedContributors
+      .filter(item => item.url !== undefined)
+      .sort((a, b) => b.contributions - a.contributions);
+    console.log(groupedContributors, 'gg');
     const extractedUserUrl = extractURL(groupedContributors, 'url');
 
-    // console.log(extractedUserUrl);
     commit('setOrganizations', groupedContributors);
     const promiseArray = extractedUserUrl.map(fetchURL);
-
-    axios.all(promiseArray.map(p => p.catch(error => null))).then(data => {
-      console.log(data);
-      // localStorage.setItem('updatedContributors', JSON.stringify(data))
-      data.forEach((item, i) => {
-        // console.log(item.data.login, groupedContributors[i].login);
-        if (item.data.login && groupedContributors[i].login) {
-          if (item.data.login == groupedContributors[i].login) {
-            console.log('a');
+    const notFound = [];
+    axios
+      .all(
+        promiseArray.map(p =>
+          p.catch(error => {
+            notFound.push(error.response.config.url);
+            return {};
+          })
+        )
+      )
+      .then(data => {
+        const filteredData = groupedContributors.filter(item => {
+          if (item && notFound.indexOf(item.url) === -1) {
+            return item;
           }
-        }
+        });
+        console.log(data, 'ffff');
 
-        // console.log(data, 'adasda');
+        data.forEach((item, i) => {
+          if (item.data.login && filteredData[i].login) {
+            if (item.data.login == filteredData[i].login) {
+              filteredData[i].followers = item.data.followers;
+              filteredData[i].public_repos = item.data.public_repos;
+              filteredData[i].public_gists = item.data.public_gists;
+            }
+          }
+        });
+        console.log(filteredData);
+        localStorage.setItem('updatedContributorsData', JSON.stringify(filteredData));
+        commit('setOrganizations', filteredData);
+        return filteredData;
       });
-
-      return contributors;
-    });
   }
 };
 

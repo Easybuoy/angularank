@@ -1,6 +1,12 @@
 import parse from 'parse-link-header';
 import axios from 'axios';
 
+const axiosWithAuth = () => {
+  return axios.create({
+    headers: { Authorization: 'Token 097de95c321b3d1042695472de58c2c1fa32e3ac ' },
+    baseURL: 'https://api.github.com'
+  });
+};
 const formatURL = (linkHeader, url) => {
   let startingPoint = 1;
   const parsedLink = parse(linkHeader);
@@ -34,4 +40,4 @@ const fetchURL = url =>
     headers: { Authorization: 'Token 097de95c321b3d1042695472de58c2c1fa32e3ac ' }
   });
 
-export { formatURL, extractURL, fetchURL };
+export { formatURL, extractURL, fetchURL, axiosWithAuth };

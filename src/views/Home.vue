@@ -38,7 +38,7 @@ export default {
     ...mapActions(['getOrganizations'])
   },
   created() {
-    // this.getOrganizations();
+    this.getOrganizations();
   },
   components: {
     Dropdown
