@@ -19,9 +19,9 @@
             :src="userDetail.avatar_url"
             :lazy-src="userDetail.avatar_url"
             aspect-ratio="1"
-            class="grey lighten-2"
+            class="grey lighten-2 img"
             width="400"
-            height="450"
+            height="500"
           ></v-img>
         </div>
 
@@ -127,7 +127,11 @@
       </div>
     </div>
 
-    <Repositories v-if="repositories.length > 0" :repositories="repositories" :login="userDetail.login" />
+    <Repositories
+      v-if="repositories.length > 0"
+      :repositories="repositories"
+      :login="userDetail.login"
+    />
   </div>
 </template>
 
@@ -159,7 +163,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .container {
   display: flex;
   flex-wrap: wrap;
@@ -172,10 +176,66 @@ export default {
   margin: 0 auto;
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
+  margin: 1rem auto;
+  box-shadow: rgb(139, 21, 21) 10px 10px 2px 2px;
+  border-radius: 10px;
+
+  .img {
+    border-radius: 10px;
+  }
+  @media only screen and (max-width: 2000px) {
+    width: 35%;
+  }
+  @media only screen and (max-width: 1000px) {
+    width: 40%;
+  }
+
+  @media only screen and (max-width: 800px) {
+    width: 70%;
+  }
+
+  @media only screen and (max-width: 600px) {
+    width: 90%;
+  }
 }
 
 .user-detail {
-  width: 60%;
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 1rem auto;
+
+  @media only screen and (max-width: 800px) {
+    width: 70%;
+  }
+
+  @media only screen and (max-width: 600px) {
+    width: 90%;
+  }
+
+  .user-detail-list {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+
+    background-color: white;
+    padding: 1rem;
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+      0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+
+    .user-title {
+      font-family: 'Concert One', cursive;
+      text-align: center;
+      width: 100%;
+      text-transform: uppercase;
+    }
+  }
+
+  .user-detail-container {
+    font-size: 1.1rem;
+  }
 }
 
 .list {
@@ -186,27 +246,6 @@ export default {
 .list-item {
   width: 100%;
   font-family: 'Mallanna', sans-serif;
-}
-
-.user-detail-list {
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-  background-color: white;
-  padding: 1rem;
-  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14),
-    0px 1px 5px 0px rgba(0, 0, 0, 0.12);
-}
-
-.user-detail-list .user-title {
-  font-family: 'Concert One', cursive;
-  text-align: center;
-  width: 100%;
-  text-transform: uppercase;
-}
-
-.user-detail-container {
-  font-size: 1.1rem;
 }
 
 .full-width {

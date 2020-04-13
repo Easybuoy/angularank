@@ -27,7 +27,7 @@ const actions = {
 
         console.log(res.data);
         axiosWithAuth()
-          .get(res.data.repos_url)
+          .get(`${res.data.repos_url}?per_page=100`)
           .then(response => {
             console.log(response.data);
             commit('setRepositories', response.data);
