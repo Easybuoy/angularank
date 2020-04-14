@@ -13,7 +13,7 @@ const routes = [
     component: Home,
   },
   { path: '/user/:login', name: 'user', component: UserDetail },
-  { path: '/repo/:login/:repo_name', name: 'repo', component: RepositoryDetail },
+  { path: '/repo/:login/:repoName', name: 'repo', component: RepositoryDetail },
 ];
 
 const router = new VueRouter({
