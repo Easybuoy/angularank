@@ -97,7 +97,7 @@ const getContributorsDetail = (commit, contributors) => {
     'updatedContributorsData',
     'contributors'
   );
-  console.log(contributors);
+
   if (updatedContributorsData === null) {
     let groupedContributors = [];
 
@@ -146,7 +146,11 @@ const getContributorsDetail = (commit, contributors) => {
         commit('setOrganizations', filteredData);
         commit('setLoading');
         return filteredData;
-      }).catch(() => commit('setError', 'Error geting contributor details'));
+      })
+      .catch(() => {
+        commit('setError', 'Error loading contributor details');
+        commit('setLoading');
+      });
   } else {
     commit('setOrganizations', updatedContributorsData);
     commit('setLoading');
