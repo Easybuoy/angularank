@@ -109,9 +109,7 @@ const getContributorsDetail = (commit, contributors) => {
       this[o.login].contributions += o.contributions;
     }, Object.create(null));
 
-    groupedContributors = groupedContributors
-      .filter(item => item.url !== undefined)
-      .sort((a, b) => b.contributions - a.contributions);
+    groupedContributors = groupedContributors.filter(item => item.url !== undefined);
     const extractedUserUrl = extractURL(groupedContributors, 'url');
 
     // commit('setOrganizations', groupedContributors);
@@ -143,7 +141,7 @@ const getContributorsDetail = (commit, contributors) => {
           }
         });
         addDataToLocalStorage(filteredData, 'updatedContributorsData', 'contributors');
-        commit('setOrganizations', filteredData);
+        commit('setContributors', filteredData);
         commit('setLoading');
         return filteredData;
       })
@@ -152,7 +150,7 @@ const getContributorsDetail = (commit, contributors) => {
         commit('setLoading');
       });
   } else {
-    commit('setOrganizations', updatedContributorsData);
+    commit('setContributors', updatedContributorsData);
     commit('setLoading');
   }
 };

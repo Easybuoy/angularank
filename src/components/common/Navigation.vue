@@ -43,10 +43,10 @@ export default {
         id: 1,
         name: 'Home',
         icon: 'mdi-home',
-        link: '/'
-      }
-    ]
-  })
+        link: '/',
+      },
+    ],
+  }),
 };
 </script>
 

@@ -12,7 +12,7 @@
       <Dropdown />
 
       <v-row no-gutters justify="center">
-        <div v-for="item in allOrganizations" :key="item.id" class="card">
+        <div v-for="item in allContributors" :key="item.id" class="card">
           <router-link :to="'/user/' + item.login">
             <v-card class="mx-auto" max-width="344" outlined>
               <v-list-item three-line>
@@ -48,13 +48,13 @@ import Error from '@/components/common/Error.vue';
 export default {
   name: 'Home',
   computed: {
-    ...mapGetters(['allOrganizations', 'loading', 'error'])
+    ...mapGetters(['allContributors', 'loading', 'error'])
   },
   methods: {
-    ...mapActions(['getOrganizations'])
+    ...mapActions(['getContributors'])
   },
   created() {
-    this.getOrganizations();
+    this.getContributors();
   },
   components: {
     Dropdown,
