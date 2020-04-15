@@ -10,6 +10,7 @@ import {
 
 const state = {
   contributors: [],
+  paginatedContributors: [],
   sortByContributorsArrow: '',
   sortByFollowersArrow: '',
   sortByGistsArrow: '',
@@ -18,6 +19,7 @@ const state = {
 
 const getters = {
   allContributors: currentState => currentState.contributors,
+  paginatedContributors: currentState => currentState.paginatedContributors,
   sortByContributorsArrow: currentState => currentState.sortByContributorsArrow,
   sortByGistsArrow: currentState => currentState.sortByGistsArrow,
   sortByRepositoryArrow: currentState => currentState.sortByRepositoryArrow,
@@ -161,6 +163,7 @@ const actions = {
 
 const mutations = {
   setContributors: (state, contributors) => (state.contributors = contributors),
+  setPaginatedContributors: (state, paginatedContributors) => (state.paginatedContributors = paginatedContributors),
   setSortByContributorsArrow: (state, sortByContributorsArrow) =>
     (state.sortByContributorsArrow = sortByContributorsArrow),
   setsortByGistsArrow: (state, sortByGistsArrow) => (state.sortByGistsArrow = sortByGistsArrow),

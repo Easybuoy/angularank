@@ -12,18 +12,26 @@
       <Sort />
 
       <v-row no-gutters justify="center">
-        <div v-for="item in allContributors" :key="item.id" class="card">
+        <div v-for="item in paginatedContributors" :key="item.id" class="card">
           <router-link :to="'/user/' + item.login">
             <v-card class="mx-auto" max-width="344" outlined>
               <v-list-item three-line>
                 <v-list-item-content>
-                  <v-list-item-title
-                    class="headline mb-1 red--text text--darken-4 title"
-                  >{{ item.login }}</v-list-item-title>
-                  <v-list-item-subtitle class="detail">Contributions: {{ item.contributions }}</v-list-item-subtitle>
-                  <v-list-item-subtitle class="detail">Followers: {{ item.followers }}</v-list-item-subtitle>
-                  <v-list-item-subtitle class="detail">Repositories: {{ item.public_repos }}</v-list-item-subtitle>
-                  <v-list-item-subtitle class="detail">Gists: {{ item.public_gists }}</v-list-item-subtitle>
+                  <v-list-item-title class="headline mb-1 red--text text--darken-4 title">{{
+                    item.login
+                  }}</v-list-item-title>
+                  <v-list-item-subtitle class="detail"
+                    >Contributions: {{ item.contributions }}</v-list-item-subtitle
+                  >
+                  <v-list-item-subtitle class="detail"
+                    >Followers: {{ item.followers }}</v-list-item-subtitle
+                  >
+                  <v-list-item-subtitle class="detail"
+                    >Repositories: {{ item.public_repos }}</v-list-item-subtitle
+                  >
+                  <v-list-item-subtitle class="detail"
+                    >Gists: {{ item.public_gists }}</v-list-item-subtitle
+                  >
                 </v-list-item-content>
 
                 <v-list-item-avatar size="80" color="grey">
@@ -35,6 +43,8 @@
         </div>
       </v-row>
     </v-container>
+  
+    <Pagination :selectedPageData="allContributors" :page="1" :totalPages="allContributors.length" />
   </div>
 </template>
 
@@ -44,11 +54,12 @@ import { mapGetters, mapActions } from 'vuex';
 import Spinner from '@/components/common/Spinner.vue';
 import Sort from '@/components/common/Sort.vue';
 import Error from '@/components/common/Error.vue';
+import Pagination from '@/components/common/Pagination.vue';
 
 export default {
   name: 'Home',
   computed: {
-    ...mapGetters(['allContributors', 'loading', 'error'])
+    ...mapGetters(['allContributors', 'paginatedContributors', 'loading', 'error'])
   },
   methods: {
     ...mapActions(['getContributors'])
@@ -59,7 +70,8 @@ export default {
   components: {
     Sort,
     Spinner,
-    Error
+    Error,
+    Pagination
   }
 };
 </script>

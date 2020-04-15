@@ -5,10 +5,11 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const { VUE_APP_TOKEN } = process.env;
-const axiosWithAuth = () => axios.create({
-  headers: { Authorization: VUE_APP_TOKEN },
-  baseURL: 'https://api.github.com',
-});
+const axiosWithAuth = () =>
+  axios.create({
+    headers: { Authorization: VUE_APP_TOKEN },
+    baseURL: 'https://api.github.com'
+  });
 const formatURL = (linkHeader, url) => {
   let startingPoint = 1;
   const parsedLink = parse(linkHeader);
@@ -27,7 +28,7 @@ const formatURL = (linkHeader, url) => {
 const extractURL = (data, property) => {
   let response = [];
 
-  data.forEach((item) => {
+  data.forEach(item => {
     if (item[property]) {
       response = response.concat(item[property]);
     }
@@ -36,9 +37,9 @@ const extractURL = (data, property) => {
   return response;
 };
 
-const fetchURL = (url) => axiosWithAuth().get(url);
+const fetchURL = url => axiosWithAuth().get(url);
 
-const oneDayAgo = (date) => {
+const oneDayAgo = date => {
   let oneDayAgo = new Date();
   oneDayAgo = oneDayAgo.setDate(oneDayAgo.getDate() - 1);
   const difference = date - oneDayAgo;
@@ -67,7 +68,7 @@ const addDataToLocalStorage = (data, itemKey, key) => {
     if (contributorsData) {
       const newData = {
         [key]: data,
-        created_at: Date.now(),
+        created_at: Date.now()
       };
       localStorage.setItem(itemKey, JSON.stringify(newData));
       return newData;
@@ -100,7 +101,7 @@ const getContributorsDetail = (commit, contributors) => {
   if (updatedContributorsData === null) {
     let groupedContributors = [];
 
-    contributors.forEach(function (o) {
+    contributors.forEach(function(o) {
       if (!this[o.login]) {
         this[o.login] = { ...o, contributions: 0 };
         groupedContributors.push(this[o.login]);
@@ -108,7 +109,7 @@ const getContributorsDetail = (commit, contributors) => {
       this[o.login].contributions += o.contributions;
     }, Object.create(null));
 
-    groupedContributors = groupedContributors.filter((item) => item.url !== undefined);
+    groupedContributors = groupedContributors.filter(item => item.url !== undefined);
     const extractedUserUrl = extractURL(groupedContributors, 'url');
 
     // commit('setOrganizations', groupedContributors);
@@ -116,13 +117,15 @@ const getContributorsDetail = (commit, contributors) => {
     const notFound = [];
     axios
       .all(
-        promiseArray.map((p) => p.catch((error) => {
-          notFound.push(error.response.config.url);
-          return {};
-        }))
+        promiseArray.map(p =>
+          p.catch(error => {
+            notFound.push(error.response.config.url);
+            return {};
+          })
+        )
       )
-      .then((data) => {
-        const filteredData = groupedContributors.filter((item) => {
+      .then(data => {
+        const filteredData = groupedContributors.filter(item => {
           if (item && notFound.indexOf(item.url) === -1) {
             return item;
           }
@@ -138,6 +141,9 @@ const getContributorsDetail = (commit, contributors) => {
           }
         });
         addDataToLocalStorage(filteredData, 'updatedContributorsData', 'contributors');
+        const paginatedContributors = filteredData.slice(0, 20);
+
+        commit('setPaginatedContributors', paginatedContributors);
         commit('setContributors', filteredData);
         commit('setLoading');
         return filteredData;
@@ -147,6 +153,8 @@ const getContributorsDetail = (commit, contributors) => {
         commit('setLoading');
       });
   } else {
+    const paginatedContributors = updatedContributorsData.slice(0, 20);
+    commit('setPaginatedContributors', paginatedContributors);
     commit('setContributors', updatedContributorsData);
     commit('setLoading');
   }
@@ -159,5 +167,5 @@ export {
   axiosWithAuth,
   addDataToLocalStorage,
   getItemFromLocalStorage,
-  getContributorsDetail,
+  getContributorsDetail
 };
