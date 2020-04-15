@@ -97,7 +97,7 @@ const getContributorsDetail = (commit, contributors) => {
     'updatedContributorsData',
     'contributors'
   );
-
+  console.log(contributors);
   if (updatedContributorsData === null) {
     let groupedContributors = [];
 
@@ -144,11 +144,13 @@ const getContributorsDetail = (commit, contributors) => {
         });
         addDataToLocalStorage(filteredData, 'updatedContributorsData', 'contributors');
         commit('setOrganizations', filteredData);
+        commit('setLoading');
         return filteredData;
-      });
+      }).catch(() => commit('setError', 'Error geting contributor details'));
+  } else {
+    commit('setOrganizations', updatedContributorsData);
+    commit('setLoading');
   }
-
-  commit('setOrganizations', updatedContributorsData);
 };
 
 export {

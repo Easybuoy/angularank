@@ -1,4 +1,5 @@
-import axios from 'axios';
+// import axios from 'axios';
+import { axiosWithAuth } from '../../utils';
 
 import {
   formatURL,
@@ -19,22 +20,19 @@ const getters = {
 
 const actions = {
   async getOrganizations({ commit }) {
+    commit('setLoading');
     const contributors = getItemFromLocalStorage('contributorsData', 'contributors');
+    
     if (contributors === null) {
       let contributorsUrl = [];
-      const response = await axios.get(
+      const response = await axiosWithAuth.get(
         'https://api.github.com/orgs/angular/repos?per_page=100&page=1',
-        {
-          headers: { Authorization: 'Token 097de95c321b3d1042695472de58c2c1fa32e3ac ' }
-        }
       );
       contributorsUrl = contributorsUrl.concat(extractURL(response.data, 'contributors_url'));
 
-      const response2 = await axios.get(
+      const response2 = await axiosWithAuth.get(
         'https://api.github.com/orgs/angular/repos?per_page=100&page=2',
-        {
-          headers: { Authorization: 'Token 097de95c321b3d1042695472de58c2c1fa32e3ac ' }
-        }
+
       );
       contributorsUrl = contributorsUrl.concat(extractURL(response2.data, 'contributors_url'));
       const promiseArray = contributorsUrl.map(fetchURL);
@@ -59,12 +57,12 @@ const actions = {
               addDataToLocalStorage(contributorsData, 'contributorsData', 'contributors');
               getContributorsDetail(commit, contributorsData);
             })
-            .catch(err => console.log(err));
+            .catch(() => commit('setError', 'Error geting contributor details'));
         })
-        .catch(err => console.log(err, 'err'));
+        .catch(() => commit('setError', 'Error geting contributor details'));
+    } else {
+      getContributorsDetail(commit, contributors);
     }
-
-    getContributorsDetail(commit, contributors);
   },
   async getOrganizationss({ commit }) {
     const contributors = JSON.parse(localStorage.getItem('contributors'));
@@ -90,7 +88,7 @@ const actions = {
     commit('setOrganizations', groupedContributors);
     const promiseArray = extractedUserUrl.map(fetchURL);
     const notFound = [];
-    axios
+    axiosWithAuth
       .all(
         promiseArray.map(p =>
           p.catch(error => {
