@@ -1,18 +1,12 @@
-import axios from 'axios';
-
 import { axiosWithAuth } from '../../utils';
 
 const state = {
   userDetail: {},
-  loading: false,
-  error: null,
   repositories: []
 };
 
 const getters = {
   userDetail: currentState => currentState.userDetail,
-  loading: currentState => currentState.loading,
-  error: currentState => currentState.error,
   repositories: currentState => currentState.repositories
 };
 
@@ -23,7 +17,6 @@ const actions = {
       .get(`https://api.github.com/users/${login}`)
       .then(res => {
         commit('setUserDetail', res.data);
-        commit('setLoading');
 
         console.log(res.data);
         axiosWithAuth()
@@ -31,6 +24,7 @@ const actions = {
           .then(response => {
             console.log(response.data);
             commit('setRepositories', response.data);
+            commit('setLoading');
           })
           .catch(error => console.log(error));
       })
@@ -43,8 +37,6 @@ const actions = {
 
 const mutations = {
   setUserDetail: (state, userDetail) => (state.userDetail = userDetail),
-  setLoading: state => (state.loading = !state.loading),
-  setError: (state, error) => (state.error = error),
   setRepositories: (state, repositories) => (state.repositories = repositories)
 };
 

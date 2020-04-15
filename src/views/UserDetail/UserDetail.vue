@@ -127,11 +127,7 @@
       </div>
     </div>
 
-    <Repositories
-      v-if="repositories.length > 0"
-      :repositories="repositories"
-      :login="userDetail.login"
-    />
+    <Repositories v-if="loading === false" :repositories="repositories" :login="userDetail.login" :loading="loading" />
   </div>
 </template>
 
@@ -178,11 +174,11 @@ export default {
   justify-content: center;
   flex-wrap: wrap;
   margin: 1rem auto;
-  box-shadow: rgb(139, 21, 21) 10px 10px 2px 2px;
   border-radius: 10px;
 
   .img {
     border-radius: 10px;
+    box-shadow: rgb(139, 21, 21) 10px 10px 2px 2px;
   }
   @media only screen and (max-width: 2000px) {
     width: 35%;
