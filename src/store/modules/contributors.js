@@ -84,74 +84,75 @@ const actions = {
         (a, b) => b.contributions - a.contributions
       );
 
+      commit('setsortByGistsArrow', '');
+      commit('setSortByFollowersArrow', '');
+      commit('setSortByRepositoryArrow', '');
       commit('setContributors', sortedContributors);
       commit('setSortByContributorsArrow', 'mdi-arrow-up');
     } else {
       const sortedContributors = state.contributors.sort(
         (a, b) => a.contributions - b.contributions
       );
-
+      commit('setsortByGistsArrow', '');
+      commit('setSortByFollowersArrow', '');
+      commit('setSortByRepositoryArrow', '');
       commit('setContributors', sortedContributors);
       commit('setSortByContributorsArrow', 'mdi-arrow-down');
     }
   },
   sortByGists({ commit }) {
-    if (
-      state.sortByGistsArrow === '' ||
-      state.sortByGistsArrow === 'mdi-arrow-down'
-    ) {
-      const sortedContributors = state.contributors.sort(
-        (a, b) => b.public_gists - a.public_gists
-      );
+    if (state.sortByGistsArrow === '' || state.sortByGistsArrow === 'mdi-arrow-down') {
+      const sortedContributors = state.contributors.sort((a, b) => b.public_gists - a.public_gists);
 
+      commit('setSortByContributorsArrow', '');
+      commit('setSortByFollowersArrow', '');
+      commit('setSortByRepositoryArrow', '');
       commit('setContributors', sortedContributors);
       commit('setsortByGistsArrow', 'mdi-arrow-up');
     } else {
-      const sortedContributors = state.contributors.sort(
-        (a, b) => a.public_gists - b.public_gists
-      );
+      const sortedContributors = state.contributors.sort((a, b) => a.public_gists - b.public_gists);
 
+      commit('setSortByContributorsArrow', '');
+      commit('setSortByFollowersArrow', '');
+      commit('setSortByRepositoryArrow', '');
       commit('setContributors', sortedContributors);
       commit('setsortByGistsArrow', 'mdi-arrow-down');
     }
   },
   sortByFollowers({ commit }) {
-    if (
-      state.sortByFollowersArrow === '' ||
-      state.sortByFollowersArrow === 'mdi-arrow-down'
-    ) {
-      const sortedContributors = state.contributors.sort(
-        (a, b) => b.followers - a.followers
-      );
+    if (state.sortByFollowersArrow === '' || state.sortByFollowersArrow === 'mdi-arrow-down') {
+      const sortedContributors = state.contributors.sort((a, b) => b.followers - a.followers);
 
+      commit('setsortByGistsArrow', '');
+      commit('setSortByContributorsArrow', '');
+      commit('setSortByRepositoryArrow', '');
       commit('setContributors', sortedContributors);
       commit('setSortByFollowersArrow', 'mdi-arrow-up');
     } else {
-      const sortedContributors = state.contributors.sort(
-        (a, b) => a.followers - b.followers
-      );
+      const sortedContributors = state.contributors.sort((a, b) => a.followers - b.followers);
 
+      commit('setsortByGistsArrow', '');
+      commit('setSortByContributorsArrow', '');
+      commit('setSortByRepositoryArrow', '');
       commit('setContributors', sortedContributors);
       commit('setSortByFollowersArrow', 'mdi-arrow-down');
     }
   },
   sortByRepository({ commit }) {
-    
-    if (
-      state.sortByRepositoryArrow === '' ||
-      state.sortByRepositoryArrow === 'mdi-arrow-down'
-    ) {
-      const sortedContributors = state.contributors.sort(
-        (a, b) => b.public_repos - a.public_repos
-      );
+    if (state.sortByRepositoryArrow === '' || state.sortByRepositoryArrow === 'mdi-arrow-down') {
+      const sortedContributors = state.contributors.sort((a, b) => b.public_repos - a.public_repos);
 
+      commit('setsortByGistsArrow', '');
+      commit('setSortByContributorsArrow', '');
+      commit('setSortByFollowersArrow', '');
       commit('setContributors', sortedContributors);
       commit('setSortByRepositoryArrow', 'mdi-arrow-up');
     } else {
-      const sortedContributors = state.contributors.sort(
-        (a, b) => a.public_repos - b.public_repos
-      );
+      const sortedContributors = state.contributors.sort((a, b) => a.public_repos - b.public_repos);
 
+      commit('setsortByGistsArrow', '');
+      commit('setSortByContributorsArrow', '');
+      commit('setSortByFollowersArrow', '');
       commit('setContributors', sortedContributors);
       commit('setSortByRepositoryArrow', 'mdi-arrow-down');
     }
@@ -163,9 +164,10 @@ const mutations = {
   setSortByContributorsArrow: (state, sortByContributorsArrow) =>
     (state.sortByContributorsArrow = sortByContributorsArrow),
   setsortByGistsArrow: (state, sortByGistsArrow) => (state.sortByGistsArrow = sortByGistsArrow),
-  setSortByFollowersArrow: (state, sortByFollowersArrow) => (state.sortByFollowersArrow = sortByFollowersArrow),
-  setSortByRepositoryArrow: (state, sortByRepositoryArrow) => (state.sortByRepositoryArrow = sortByRepositoryArrow),
-
+  setSortByFollowersArrow: (state, sortByFollowersArrow) =>
+    (state.sortByFollowersArrow = sortByFollowersArrow),
+  setSortByRepositoryArrow: (state, sortByRepositoryArrow) =>
+    (state.sortByRepositoryArrow = sortByRepositoryArrow)
 };
 
 export default {
