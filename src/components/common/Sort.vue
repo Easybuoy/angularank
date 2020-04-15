@@ -12,8 +12,8 @@
           <v-icon dark right>{{sortByFollowersArrow}}</v-icon>
         </v-btn>
 
-        <v-btn class="ma-2" color="success" dark>
-          <v-icon dark left>mdi-arrow-up</v-icon>Sort By Repositories
+        <v-btn class="ma-2" color="success" dark @click="this.sortByRepository">
+          <v-icon dark left>{{sortByRepositoryArrow}}</v-icon>Sort By Repositories
         </v-btn>
 
         <v-btn class="ma-2" color="purple" dark @click="this.sortByGists">
@@ -28,19 +28,19 @@
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  name: 'Dropdown',
+  name: 'Sort',
   data: () => ({}),
   computed: {
     ...mapGetters([
-      'allContributors',
       'sortByContributorsArrow',
       'sortByGistsArrow',
-      'sortByFollowersArrow'
-    ])
+      'sortByFollowersArrow',
+      'sortByRepositoryArrow',
+    ]),
   },
   methods: {
-    ...mapActions(['getContributors', 'sortByContributors', 'sortByGists', 'sortByFollowers', 'sortByRepository'])
-  }
+    ...mapActions(['getContributors', 'sortByContributors', 'sortByGists', 'sortByFollowers', 'sortByRepository']),
+  },
 };
 </script>
 

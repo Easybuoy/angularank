@@ -136,7 +136,25 @@ const actions = {
     }
   },
   sortByRepository({ commit }) {
+    
+    if (
+      state.sortByRepositoryArrow === '' ||
+      state.sortByRepositoryArrow === 'mdi-arrow-down'
+    ) {
+      const sortedContributors = state.contributors.sort(
+        (a, b) => b.public_repos - a.public_repos
+      );
 
+      commit('setContributors', sortedContributors);
+      commit('setSortByRepositoryArrow', 'mdi-arrow-up');
+    } else {
+      const sortedContributors = state.contributors.sort(
+        (a, b) => a.public_repos - b.public_repos
+      );
+
+      commit('setContributors', sortedContributors);
+      commit('setSortByRepositoryArrow', 'mdi-arrow-down');
+    }
   }
 };
 

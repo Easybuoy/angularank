@@ -9,7 +9,7 @@
     </div>
 
     <v-container v-else class="grey lighten-5">
-      <Dropdown />
+      <Sort />
 
       <v-row no-gutters justify="center">
         <div v-for="item in allContributors" :key="item.id" class="card">
@@ -42,7 +42,7 @@
 // @ is an alias to /src
 import { mapGetters, mapActions } from 'vuex';
 import Spinner from '@/components/common/Spinner.vue';
-import Dropdown from '@/components/common/Dropdown.vue';
+import Sort from '@/components/common/Sort.vue';
 import Error from '@/components/common/Error.vue';
 
 export default {
@@ -57,7 +57,7 @@ export default {
     this.getContributors();
   },
   components: {
-    Dropdown,
+    Sort,
     Spinner,
     Error
   }
