@@ -17,9 +17,13 @@
             <v-card class="mx-auto" max-width="344" outlined>
               <v-list-item three-line>
                 <v-list-item-content>
-                  <div class="overline mb-4">OVERLINE</div>
-                  <v-list-item-title class="headline mb-1">{{ item.login }}</v-list-item-title>
-                  <v-list-item-subtitle>Contributions: {{ item.contributions }}</v-list-item-subtitle>
+                  <v-list-item-title
+                    class="headline mb-1 red--text text--darken-4 title"
+                  >{{ item.login }}</v-list-item-title>
+                  <v-list-item-subtitle class="detail">Contributions: {{ item.contributions }}</v-list-item-subtitle>
+                  <v-list-item-subtitle class="detail">Followers: {{ item.followers }}</v-list-item-subtitle>
+                  <v-list-item-subtitle class="detail">Repositories: {{ item.public_repos }}</v-list-item-subtitle>
+                  <v-list-item-subtitle class="detail">Gists: {{ item.public_gists }}</v-list-item-subtitle>
                 </v-list-item-content>
 
                 <v-list-item-avatar size="80" color="grey">
@@ -72,5 +76,14 @@ a {
     transform: scale(1.05);
     box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.12);
   }
+}
+
+.title {
+  font-family: 'Concert One', cursive;
+}
+
+.detail {
+  font-family: 'Mallanna', sans-serif;
+  font-size: 1rem;
 }
 </style>
