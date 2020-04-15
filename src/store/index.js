@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import organization from './modules/organization';
+import contributors from './modules/contributors';
 import user from './modules/user';
 import repository from './modules/repository';
 
@@ -18,7 +18,7 @@ export default new Vuex.Store({
     error: (currentState) => currentState.error,
   },
   modules: {
-    organization,
+    contributors,
     user,
     repository,
   },

@@ -9,10 +9,10 @@
     </div>
 
     <v-container v-else class="grey lighten-5">
-      <Dropdown />
+      <Sort />
 
       <v-row no-gutters justify="center">
-        <div v-for="item in allOrganizations" :key="item.id" class="card">
+        <div v-for="item in allContributors" :key="item.id" class="card">
           <router-link :to="'/user/' + item.login">
             <v-card class="mx-auto" max-width="344" outlined>
               <v-list-item three-line>
@@ -42,22 +42,22 @@
 // @ is an alias to /src
 import { mapGetters, mapActions } from 'vuex';
 import Spinner from '@/components/common/Spinner.vue';
-import Dropdown from '@/components/common/Dropdown.vue';
+import Sort from '@/components/common/Sort.vue';
 import Error from '@/components/common/Error.vue';
 
 export default {
   name: 'Home',
   computed: {
-    ...mapGetters(['allOrganizations', 'loading', 'error'])
+    ...mapGetters(['allContributors', 'loading', 'error'])
   },
   methods: {
-    ...mapActions(['getOrganizations'])
+    ...mapActions(['getContributors'])
   },
   created() {
-    this.getOrganizations();
+    this.getContributors();
   },
   components: {
-    Dropdown,
+    Sort,
     Spinner,
     Error
   }
