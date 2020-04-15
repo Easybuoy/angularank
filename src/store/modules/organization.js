@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { formatURL, extractURL, fetchURL, getItemFromLocalStorage, addDataToLocalStorage } from '../../utils';
+import { formatURL, extractURL, fetchURL, getItemFromLocalStorage, addDataToLocalStorage, getContributorsDetail } from '../../utils';
 
 const state = {
   organizations: []
@@ -49,54 +49,25 @@ const actions = {
             remainingContributorsListURL = remainingContributorsListURL.concat(formattedURL);
           }
         });
-
-        console.log(contributorsData, 'contribData');
-        console.log(contributorsData.length, 'contribDataLength');
-        console.log(remainingContributorsListURL, 'contribURL');
-        console.log(remainingContributorsListURL.length, 'contribURL');
-
         const secondPromiseArray = contributorsUrl.map(fetchURL);
 
         Promise.all(secondPromiseArray)
           .then(resp => {
-            console.log(resp, 'resp');
-
             resp.forEach(item => {
               contributorsData = contributorsData.concat(item.data);
                
             });
-            // contributorsData
-            localStorage.setItem('contributors', JSON.stringify(contributorsData));
+            addDataToLocalStorage(contributorsData, 'contributorsData', 'contributors');
+            getContributorsDetail(commit, contributorsData)
           })
           .catch(err => console.log(err));
       })
       .catch(err => console.log(err, 'err'));
     }
+
+    getContributorsDetail(commit, contributors)
     
-    // console.log(response.data);
-    // response.data.forEach(item => {
-    //   console.log('a');
-    //   axios
-    //     .get(item.contributors_url, {
-    //       headers: { Authorization: 'Token 097de95c321b3d1042695472de58c2c1fa32e3ac ' }
-    //     })
-    //     .then(res => {
-
-    //       contrb = contrb.concat(res.data);
-    //       console.log(contrb.length, 'aaasd');
-    //     });
-    // });
-
-    // const url = 'https://api.github.com/repos/angular/angular.js/contributors';
-    // axios
-    //   .get('https://api.github.com/repos/angular/angular.js/contributors?per_page=100&page=1', {
-    //     headers: { Authorization: 'Token 097de95c321b3d1042695472de58c2c1fa32e3ac ' }
-    //   })
-    //   .then(res => {
-    //     const formattedURL = formatURL(res.headers.link, url);
-    //     console.log(formattedURL);
-    //     console.log(res.data);
-    //   });
+   
 
     
   },
