@@ -40,4 +40,61 @@ const fetchURL = url =>
     headers: { Authorization: 'Token 097de95c321b3d1042695472de58c2c1fa32e3ac ' }
   });
 
-export { formatURL, extractURL, fetchURL, axiosWithAuth };
+const oneDayAgo = date => {
+  let oneDayAgo = new Date();
+  oneDayAgo = oneDayAgo.setDate(oneDayAgo.getDate() - 1);
+  const difference = date - oneDayAgo;
+  const daysDifference = Math.floor(difference / 1000 / 60 / 60 / 24);
+  if (daysDifference === 0) {
+    return false;
+  }
+  return true;
+};
+
+const initializeLocalStorage = () => {
+  if (!localStorage.getItem('contributorsData')) {
+    localStorage.setItem('contributorsData', JSON.stringify({}));
+  }
+};
+
+const addDataToLocalStorage = (data, key) => {
+  initializeLocalStorage();
+
+  try {
+    const contributorsData = JSON.parse(localStorage.getItem('contributorsData'));
+    if (contributorsData) {
+      const newContributorsData = {
+        contributors: data,
+        created_at: Date.now()
+      };
+      localStorage.setItem('contributorsData', JSON.stringify(newContributorsData));
+      return newContributorsData;
+    }
+  } catch (err) {
+    return false;
+  }
+};
+
+const getItemFromLocalStorage = (itemKey, key) => {
+  initializeLocalStorage();
+  try {
+    const contributorsData = JSON.parse(localStorage.getItem(itemKey));
+
+    if (!oneDayAgo(contributorsData.created_at)) {
+      return contributorsData[key];
+    }
+
+    return null;
+  } catch (error) {
+    return null;
+  }
+};
+
+export {
+  formatURL,
+  extractURL,
+  fetchURL,
+  axiosWithAuth,
+  addDataToLocalStorage,
+  getItemFromLocalStorage
+};
