@@ -44,12 +44,6 @@ export default {
         name: 'Home',
         icon: 'mdi-home',
         link: '/'
-      },
-      {
-        id: 2,
-        name: 'Repositories',
-        icon: 'mdi-view-dashboard',
-        link: '/repository'
       }
     ]
   })
