@@ -5,7 +5,7 @@
     <v-row no-gutters justify="center">
       <div v-for="item in allOrganizations" :key="item.id" class="card">
         <router-link :to="'/user/' + item.login">
-          <v-card class="mx-auto " max-width="344" outlined>
+          <v-card class="mx-auto" max-width="344" outlined>
             <v-list-item three-line>
               <v-list-item-content>
                 <div class="overline mb-4">OVERLINE</div>
@@ -19,8 +19,9 @@
             </v-list-item>
           </v-card>
         </router-link>
-      </div> </v-row
-  ></v-container>
+      </div>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -46,12 +47,17 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="less">
 a {
   text-decoration: none;
 }
 
 .card {
   margin: 0.5rem;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.12);
+  }
 }
 </style>

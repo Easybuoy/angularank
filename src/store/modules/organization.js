@@ -1,6 +1,13 @@
 import axios from 'axios';
 
-import { formatURL, extractURL, fetchURL, getItemFromLocalStorage, addDataToLocalStorage, getContributorsDetail } from '../../utils';
+import {
+  formatURL,
+  extractURL,
+  fetchURL,
+  getItemFromLocalStorage,
+  addDataToLocalStorage,
+  getContributorsDetail
+} from '../../utils';
 
 const state = {
   organizations: []
@@ -12,8 +19,7 @@ const getters = {
 
 const actions = {
   async getOrganizations({ commit }) {
-    const contributors = getItemFromLocalStorage('contributorsData', 'contributors')
-    console.log(contributors, '==')
+    const contributors = getItemFromLocalStorage('contributorsData', 'contributors');
     if (contributors === null) {
       let contributorsUrl = [];
       const response = await axios.get(
@@ -23,8 +29,7 @@ const actions = {
         }
       );
       contributorsUrl = contributorsUrl.concat(extractURL(response.data, 'contributors_url'));
-      console.log(contributorsUrl);
-  
+
       const response2 = await axios.get(
         'https://api.github.com/orgs/angular/repos?per_page=100&page=2',
         {
@@ -32,44 +37,34 @@ const actions = {
         }
       );
       contributorsUrl = contributorsUrl.concat(extractURL(response2.data, 'contributors_url'));
-      console.log(contributorsUrl);
-      localStorage.setItem('contributorsUrl', JSON.stringify(contributorsUrl));
-      console.log(contributorsUrl.length);
-
       const promiseArray = contributorsUrl.map(fetchURL);
-    let contributorsData = [];
-    let remainingContributorsListURL = [];
-    Promise.all(promiseArray)
-      .then(data => {
-        data.forEach(item => {
-          console.log(data, 'adasda');
-          contributorsData = contributorsData.concat(item.data);
-          if (item.headers.link) {
-            const formattedURL = formatURL(item.headers.link, item.config.url);
-            remainingContributorsListURL = remainingContributorsListURL.concat(formattedURL);
-          }
-        });
-        const secondPromiseArray = contributorsUrl.map(fetchURL);
+      let contributorsData = [];
+      let remainingContributorsListURL = [];
+      Promise.all(promiseArray)
+        .then(data => {
+          data.forEach(item => {
+            contributorsData = contributorsData.concat(item.data);
+            if (item.headers.link) {
+              const formattedURL = formatURL(item.headers.link, item.config.url);
+              remainingContributorsListURL = remainingContributorsListURL.concat(formattedURL);
+            }
+          });
+          const secondPromiseArray = contributorsUrl.map(fetchURL);
 
-        Promise.all(secondPromiseArray)
-          .then(resp => {
-            resp.forEach(item => {
-              contributorsData = contributorsData.concat(item.data);
-               
-            });
-            addDataToLocalStorage(contributorsData, 'contributorsData', 'contributors');
-            getContributorsDetail(commit, contributorsData)
-          })
-          .catch(err => console.log(err));
-      })
-      .catch(err => console.log(err, 'err'));
+          Promise.all(secondPromiseArray)
+            .then(resp => {
+              resp.forEach(item => {
+                contributorsData = contributorsData.concat(item.data);
+              });
+              addDataToLocalStorage(contributorsData, 'contributorsData', 'contributors');
+              getContributorsDetail(commit, contributorsData);
+            })
+            .catch(err => console.log(err));
+        })
+        .catch(err => console.log(err, 'err'));
     }
 
-    getContributorsDetail(commit, contributors)
-    
-   
-
-    
+    getContributorsDetail(commit, contributors);
   },
   async getOrganizationss({ commit }) {
     const contributors = JSON.parse(localStorage.getItem('contributors'));

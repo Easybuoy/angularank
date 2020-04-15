@@ -114,7 +114,7 @@ const getContributorsDetail = (commit, contributors) => {
       .sort((a, b) => b.contributions - a.contributions);
     const extractedUserUrl = extractURL(groupedContributors, 'url');
 
-    commit('setOrganizations', groupedContributors);
+    // commit('setOrganizations', groupedContributors);
     const promiseArray = extractedUserUrl.map(fetchURL);
     const notFound = [];
     axios
