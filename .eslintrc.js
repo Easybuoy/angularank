@@ -19,7 +19,9 @@ module.exports = {
         exports: 'always-multiline',
         functions: 'ignore'
       }
-    ]
+    ],
+    'no-return-assign': 0,
+    'no-shadow': 0
   },
   overrides: [
     {

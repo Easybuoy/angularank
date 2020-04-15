@@ -2,16 +2,12 @@ import { axiosWithAuth } from '../../utils';
 
 const state = {
   repoDetail: {},
-  //   loading: false,
-  //   error: null,
-  contributors: []
+  contributors: [],
 };
 
 const getters = {
-  repoDetail: currentState => currentState.repoDetail,
-  //   loading: currentState => currentState.loading,
-  //   error: currentState => currentState.error,
-  contributors: currentState => currentState.contributors
+  repoDetail: (currentState) => currentState.repoDetail,
+  contributors: (currentState) => currentState.contributors,
 };
 
 const actions = {
@@ -20,36 +16,35 @@ const actions = {
     commit('setLoading');
     axiosWithAuth()
       .get(`https://api.github.com/repos/${login}/${repoName}`)
-      .then(res => {
-        console.log(res.data);
+      .then((res) => {
         commit('setRepoDetail', res.data);
         axiosWithAuth()
           .get(`https://api.github.com/repos/${login}/${repoName}/contributors?per_page=100`)
-          .then(response => {
+          .then((response) => {
             const sortedContributors = response.data.sort(
               (a, b) => b.contributions - a.contributions
             );
             commit('setContributors', sortedContributors);
+            commit('setLoading');
           })
-          .catch(error => console.log(error));
+          .catch(() => {
+            commit('setError', 'Error geting details');
+          });
       })
-      .catch(err => {
-        console.log(err);
-        commit('setError', err);
+      .catch(() => {
+        commit('setError', 'Error geting details');
       });
-  }
+  },
 };
 
 const mutations = {
   setRepoDetail: (state, repoDetail) => (state.repoDetail = repoDetail),
-  //   setLoading: state => (state.loading = !state.loading),
-  //   setError: (state, error) => (state.error = error),
-  setContributors: (state, contributors) => (state.contributors = contributors)
+  setContributors: (state, contributors) => (state.contributors = contributors),
 };
 
 export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
 };

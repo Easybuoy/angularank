@@ -7,9 +7,16 @@ import repository from './modules/repository';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
-  mutations: {},
+  state: { loading: false, error: null },
+  mutations: {
+    setLoading: (state) => (state.loading = !state.loading),
+    setError: (state, error) => (state.error = error),
+  },
   actions: {},
+  getters: {
+    loading: (currentState) => currentState.loading,
+    error: (currentState) => currentState.error,
+  },
   modules: {
     organization,
     user,

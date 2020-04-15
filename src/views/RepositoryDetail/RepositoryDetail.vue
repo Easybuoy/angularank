@@ -1,6 +1,14 @@
 <template>
   <div>
-    <v-container class="grey lighten-5">
+    <div v-if="loading">
+      <Spinner />
+    </div>
+
+    <div v-else-if="error !== null">
+      <Error :error="error" />
+    </div>
+
+    <v-container v-else class="grey lighten-5">
       <div class="user-detail">
         <div class="user-detail-list">
           <div class="full-width">
@@ -124,6 +132,8 @@
 import { mapGetters, mapActions } from 'vuex';
 import moment from 'moment';
 import Divider from '@/components/common/Divider.vue';
+import Spinner from '@/components/common/Spinner.vue';
+import Error from '@/components/common/Error.vue';
 
 export default {
   name: 'Repository_Detail',
@@ -147,7 +157,7 @@ export default {
       this.pushed_at = moment(date).fromNow();
     }
   },
-  components: { Divider }
+  components: { Divider, Spinner, Error }
 };
 </script>
 
