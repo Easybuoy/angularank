@@ -26,7 +26,7 @@
             <Divider />
           </div>
 
-          <div class="full-width" v-show="repoDetail.homepage !== ''">
+          <div class="full-width" v-show="repoDetail.homepage !== '' && repoDetail.homepage !== null">
             <h4 class="user-detail-container list-item grey--text text--darken-2">
               <span class="red--text text--darken-4">Homepage:&nbsp;</span>
               {{ repoDetail.homepage }}
