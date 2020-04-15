@@ -1,12 +1,14 @@
 import parse from 'parse-link-header';
 import axios from 'axios';
+import dotenv from 'dotenv';
 
-const axiosWithAuth = () => {
-  return axios.create({
-    headers: { Authorization: 'Token 097de95c321b3d1042695472de58c2c1fa32e3ac ' },
-    baseURL: 'https://api.github.com'
-  });
-};
+dotenv.config();
+
+const { VUE_APP_TOKEN } = process.env;
+const axiosWithAuth = () => axios.create({
+  headers: { Authorization: VUE_APP_TOKEN },
+  baseURL: 'https://api.github.com',
+});
 const formatURL = (linkHeader, url) => {
   let startingPoint = 1;
   const parsedLink = parse(linkHeader);
@@ -25,7 +27,7 @@ const formatURL = (linkHeader, url) => {
 const extractURL = (data, property) => {
   let response = [];
 
-  data.forEach(item => {
+  data.forEach((item) => {
     if (item[property]) {
       response = response.concat(item[property]);
     }
@@ -34,12 +36,9 @@ const extractURL = (data, property) => {
   return response;
 };
 
-const fetchURL = url =>
-  axios.get(url, {
-    headers: { Authorization: 'Token 097de95c321b3d1042695472de58c2c1fa32e3ac ' }
-  });
+const fetchURL = (url) => axiosWithAuth().get(url);
 
-const oneDayAgo = date => {
+const oneDayAgo = (date) => {
   let oneDayAgo = new Date();
   oneDayAgo = oneDayAgo.setDate(oneDayAgo.getDate() - 1);
   const difference = date - oneDayAgo;
@@ -68,7 +67,7 @@ const addDataToLocalStorage = (data, itemKey, key) => {
     if (contributorsData) {
       const newData = {
         [key]: data,
-        created_at: Date.now()
+        created_at: Date.now(),
       };
       localStorage.setItem(itemKey, JSON.stringify(newData));
       return newData;
@@ -101,7 +100,7 @@ const getContributorsDetail = (commit, contributors) => {
   if (updatedContributorsData === null) {
     let groupedContributors = [];
 
-    contributors.forEach(function(o) {
+    contributors.forEach(function (o) {
       if (!this[o.login]) {
         this[o.login] = { ...o, contributions: 0 };
         groupedContributors.push(this[o.login]);
@@ -109,7 +108,7 @@ const getContributorsDetail = (commit, contributors) => {
       this[o.login].contributions += o.contributions;
     }, Object.create(null));
 
-    groupedContributors = groupedContributors.filter(item => item.url !== undefined);
+    groupedContributors = groupedContributors.filter((item) => item.url !== undefined);
     const extractedUserUrl = extractURL(groupedContributors, 'url');
 
     // commit('setOrganizations', groupedContributors);
@@ -117,15 +116,13 @@ const getContributorsDetail = (commit, contributors) => {
     const notFound = [];
     axios
       .all(
-        promiseArray.map(p =>
-          p.catch(error => {
-            notFound.push(error.response.config.url);
-            return {};
-          })
-        )
+        promiseArray.map((p) => p.catch((error) => {
+          notFound.push(error.response.config.url);
+          return {};
+        }))
       )
-      .then(data => {
-        const filteredData = groupedContributors.filter(item => {
+      .then((data) => {
+        const filteredData = groupedContributors.filter((item) => {
           if (item && notFound.indexOf(item.url) === -1) {
             return item;
           }
@@ -162,5 +159,5 @@ export {
   axiosWithAuth,
   addDataToLocalStorage,
   getItemFromLocalStorage,
-  getContributorsDetail
+  getContributorsDetail,
 };
