@@ -57,18 +57,18 @@ const initializeLocalStorage = () => {
   }
 };
 
-const addDataToLocalStorage = (data, key) => {
+const addDataToLocalStorage = (data, itemKey, key) => {
   initializeLocalStorage();
 
   try {
-    const contributorsData = JSON.parse(localStorage.getItem('contributorsData'));
+    const contributorsData = JSON.parse(localStorage.getItem(itemKey));
     if (contributorsData) {
-      const newContributorsData = {
-        contributors: data,
+      const newData = {
+        key: data,
         created_at: Date.now()
       };
-      localStorage.setItem('contributorsData', JSON.stringify(newContributorsData));
-      return newContributorsData;
+      localStorage.setItem(itemKey, JSON.stringify(newData));
+      return newData;
     }
   } catch (err) {
     return false;
