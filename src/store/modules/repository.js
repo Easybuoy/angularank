@@ -19,18 +19,19 @@ const actions = {
     const { login, repoName } = params;
     commit('setLoading');
     axiosWithAuth()
-      .get(`https://api.github.com/repos/${login}/${repoName}/contributors?per_page=100`)
+      .get(`https://api.github.com/repos/${login}/${repoName}`)
       .then(res => {
-        console.log(res);
-        commit('setContributors', res.data)
-        //
-        // axiosWithAuth()
-        //   .get(`${res.data.repos_url}?per_page=100`)
-        //   .then(response => {
-        //     console.log(response.data);
-        //     commit('setRepositories', response.data);
-        //   })
-        //   .catch(error => console.log(error));
+        console.log(res.data);
+        commit('setRepoDetail', res.data);
+        axiosWithAuth()
+          .get(`https://api.github.com/repos/${login}/${repoName}/contributors?per_page=100`)
+          .then(response => {
+            const sortedContributors = response.data.sort(
+              (a, b) => b.contributions - a.contributions
+            );
+            commit('setContributors', sortedContributors);
+          })
+          .catch(error => console.log(error));
       })
       .catch(err => {
         console.log(err);

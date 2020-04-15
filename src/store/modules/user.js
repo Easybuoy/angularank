@@ -23,7 +23,6 @@ const actions = {
       .get(`https://api.github.com/users/${login}`)
       .then(res => {
         commit('setUserDetail', res.data);
-        commit('setLoading');
 
         console.log(res.data);
         axiosWithAuth()
@@ -31,6 +30,7 @@ const actions = {
           .then(response => {
             console.log(response.data);
             commit('setRepositories', response.data);
+            commit('setLoading');
           })
           .catch(error => console.log(error));
       })

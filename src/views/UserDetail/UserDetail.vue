@@ -127,11 +127,7 @@
       </div>
     </div>
 
-    <Repositories
-      v-if="repositories.length > 0"
-      :repositories="repositories"
-      :login="userDetail.login"
-    />
+    <Repositories v-if="loading === false" :repositories="repositories" :login="userDetail.login" :loading="loading" />
   </div>
 </template>
 
