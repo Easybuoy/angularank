@@ -1,9 +1,8 @@
 <template>
   <div class="text-center">
     <a href="#top">
-      {{ selectedPage }}
       <v-pagination
-        v-if="page"
+        v-if="contributors.length > 0"
         v-model="customSelectedPage"
         :length="totalPages"
         :total-visible="5"
