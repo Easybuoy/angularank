@@ -22,7 +22,7 @@ export default {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  margin: 20rem 0;
+  margin: 25rem 0;
 
   p {
     width: 100%;
