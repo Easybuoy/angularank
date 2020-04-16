@@ -1,21 +1,31 @@
 <template>
   <div class="text-center">
-    <v-pagination
-      v-if="this.page"
-      v-model="this.selectedPage"
-      :length="this.totalPages"
-      :total-visible="5"
-      prev-icon="mdi-menu-left"
-      next-icon="mdi-menu-right"
-    ></v-pagination>
+    <a href="#top">
+      {{ selectedPage }}
+      <v-pagination
+        v-if="page"
+        v-model="customSelectedPage"
+        :length="totalPages"
+        :total-visible="5"
+        prev-icon="mdi-menu-left"
+        next-icon="mdi-menu-right"
+      ></v-pagination>
+    </a>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
+import { paginateTotalPageNumber } from '../../utils';
+
 export default {
   name: 'Pagination',
+  data: () => ({
+    totalPages: 1,
+    customSelectedPage: 1
+  }),
   props: {
-    selectedPageData: {
+    contributors: {
       type: Array,
       required: true
     },
@@ -23,23 +33,26 @@ export default {
       type: Number,
       required: true,
       default: 1
-    },
-    totalPages: {
-      type: Number,
-      required: true,
-      default: 1
     }
   },
-  data: () => ({
-    selectedPage: 1
-  }),
+  computed: {
+    ...mapGetters(['allContributors', 'paginatedContributors', 'selectedPage'])
+  },
   mounted() {
-    this.selectedPage = this.page;
+    this.selectPage(this.page);
+    this.customSelectedPage = this.selectedPage;
+    const totalPage = paginateTotalPageNumber(this.contributors);
+    this.totalPages = totalPage;
+  },
+  methods: {
+    ...mapActions(['paginateContributors', 'selectPage'])
   },
   watch: {
-    selectedPage: function(newPage) {
-        console.log(newPage)
-    //   this.getNewPage(newPage);
+    customSelectedPage(newPage) {
+      this.selectPage(newPage);
+      console.log(this.selectedPage)
+      this.customSelectedPage = this.selectedPage;
+      this.paginateContributors(newPage);
     }
   }
 };

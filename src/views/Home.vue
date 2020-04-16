@@ -8,8 +8,9 @@
       <Error :error="error" />
     </div>
 
-    <v-container v-else class="grey lighten-5">
+    <v-container v-else id="top" class="grey lighten-5">
       <Sort />
+      <Divider />
 
       <v-row no-gutters justify="center">
         <div v-for="item in paginatedContributors" :key="item.id" class="card">
@@ -43,8 +44,8 @@
         </div>
       </v-row>
     </v-container>
-  
-    <Pagination :selectedPageData="allContributors" :page="1" :totalPages="allContributors.length" />
+
+    <Pagination :contributors="allContributors" :page="1" />
   </div>
 </template>
 
@@ -55,6 +56,7 @@ import Spinner from '@/components/common/Spinner.vue';
 import Sort from '@/components/common/Sort.vue';
 import Error from '@/components/common/Error.vue';
 import Pagination from '@/components/common/Pagination.vue';
+import Divider from '@/components/common/Divider.vue';
 
 export default {
   name: 'Home',
@@ -71,7 +73,8 @@ export default {
     Sort,
     Spinner,
     Error,
-    Pagination
+    Pagination,
+    Divider
   }
 };
 </script>
