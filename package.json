@@ -9,7 +9,11 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "core-js": "^3.6.4",
+    "dotenv": "^8.2.0",
+    "moment": "^2.24.0",
+    "parse-link-header": "^1.0.1",
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
     "vue-router": "^3.1.6",
