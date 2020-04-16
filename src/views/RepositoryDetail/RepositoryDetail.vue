@@ -143,10 +143,10 @@ export default {
   },
   data: () => ({
     created_at: '',
-    pushed_at: ''
+    pushed_at: '',
   }),
   computed: {
-    ...mapGetters(['repoDetail', 'loading', 'error', 'contributors'])
+    ...mapGetters(['repoDetail', 'loading', 'error', 'contributors']),
   },
   methods: {
     ...mapActions(['getRepoDetail']),
@@ -155,9 +155,9 @@ export default {
     },
     formatLastPushed(date) {
       this.pushed_at = moment(date).fromNow();
-    }
+    },
   },
-  components: { Divider, Spinner, Error }
+  components: { Divider, Spinner, Error },
 };
 </script>
 

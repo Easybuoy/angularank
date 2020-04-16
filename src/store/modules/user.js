@@ -2,12 +2,12 @@ import { axiosWithAuth } from '../../utils';
 
 const state = {
   userDetail: {},
-  repositories: []
+  repositories: [],
 };
 
 const getters = {
-  userDetail: currentState => currentState.userDetail,
-  repositories: currentState => currentState.repositories
+  userDetail: (currentState) => currentState.userDetail,
+  repositories: (currentState) => currentState.repositories,
 };
 
 const actions = {
@@ -15,34 +15,35 @@ const actions = {
     commit('setLoading');
     axiosWithAuth()
       .get(`https://api.github.com/users/${login}`)
-      .then(res => {
+      .then((res) => {
         commit('setUserDetail', res.data);
 
-        console.log(res.data);
         axiosWithAuth()
           .get(`${res.data.repos_url}?per_page=100`)
-          .then(response => {
-            console.log(response.data);
+          .then((response) => {
             commit('setRepositories', response.data);
             commit('setLoading');
           })
-          .catch(error => console.log(error));
+          .catch(() => {
+            commit('setError', 'Error loading user detail');
+            commit('setLoading');
+          });
       })
-      .catch(err => {
-        console.log(err);
-        commit('setError', err);
+      .catch(() => {
+        commit('setError', 'Error loading user detail');
+        commit('setLoading');
       });
-  }
+  },
 };
 
 const mutations = {
   setUserDetail: (state, userDetail) => (state.userDetail = userDetail),
-  setRepositories: (state, repositories) => (state.repositories = repositories)
+  setRepositories: (state, repositories) => (state.repositories = repositories),
 };
 
 export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
 };

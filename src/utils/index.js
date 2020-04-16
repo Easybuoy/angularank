@@ -111,7 +111,6 @@ const getContributorsDetail = (commit, contributors) => {
     groupedContributors = groupedContributors.filter((item) => item.url !== undefined);
     const extractedUserUrl = extractURL(groupedContributors, 'url');
 
-    // commit('setOrganizations', groupedContributors);
     const promiseArray = extractedUserUrl.map(fetchURL);
     const notFound = [];
     axios
@@ -138,6 +137,9 @@ const getContributorsDetail = (commit, contributors) => {
           }
         });
         addDataToLocalStorage(filteredData, 'updatedContributorsData', 'contributors');
+        const paginatedContributors = filteredData.slice(0, 100);
+
+        commit('setPaginatedContributors', paginatedContributors);
         commit('setContributors', filteredData);
         commit('setLoading');
         return filteredData;
@@ -147,9 +149,28 @@ const getContributorsDetail = (commit, contributors) => {
         commit('setLoading');
       });
   } else {
+    const paginatedContributors = updatedContributorsData.slice(0, 100);
+    commit('setPaginatedContributors', paginatedContributors);
     commit('setContributors', updatedContributorsData);
     commit('setLoading');
   }
+};
+
+const paginateTotalPageNumber = (data) => {
+  const totalPage = data.length / 100;
+
+  return Math.round(totalPage);
+};
+
+const paginateTotalPage = (data, newPage) => {
+  let start = 0;
+  const end = Number(`${newPage}00`);
+  if (newPage > 1) {
+    start = Number(`${newPage - 1}00`);
+  }
+
+  const paginatedContributors = data.slice(start, end);
+  return paginatedContributors;
 };
 
 export {
@@ -160,4 +181,6 @@ export {
   addDataToLocalStorage,
   getItemFromLocalStorage,
   getContributorsDetail,
+  paginateTotalPageNumber,
+  paginateTotalPage,
 };

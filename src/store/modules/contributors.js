@@ -5,23 +5,28 @@ import {
   fetchURL,
   getItemFromLocalStorage,
   addDataToLocalStorage,
-  getContributorsDetail
+  getContributorsDetail,
+  paginateTotalPage,
 } from '../../utils';
 
 const state = {
   contributors: [],
+  paginatedContributors: [],
   sortByContributorsArrow: '',
   sortByFollowersArrow: '',
   sortByGistsArrow: '',
-  sortByRepositoryArrow: ''
+  sortByRepositoryArrow: '',
+  selectedPage: 1,
 };
 
 const getters = {
-  allContributors: currentState => currentState.contributors,
-  sortByContributorsArrow: currentState => currentState.sortByContributorsArrow,
-  sortByGistsArrow: currentState => currentState.sortByGistsArrow,
-  sortByRepositoryArrow: currentState => currentState.sortByRepositoryArrow,
-  sortByFollowersArrow: currentState => currentState.sortByFollowersArrow
+  allContributors: (currentState) => currentState.contributors,
+  paginatedContributors: (currentState) => currentState.paginatedContributors,
+  sortByContributorsArrow: (currentState) => currentState.sortByContributorsArrow,
+  sortByGistsArrow: (currentState) => currentState.sortByGistsArrow,
+  sortByRepositoryArrow: (currentState) => currentState.sortByRepositoryArrow,
+  sortByFollowersArrow: (currentState) => currentState.sortByFollowersArrow,
+  selectedPage: (currentState) => currentState.selectedPage,
 };
 
 const actions = {
@@ -44,8 +49,8 @@ const actions = {
       let contributorsData = [];
       let remainingContributorsListURL = [];
       Promise.all(promiseArray)
-        .then(data => {
-          data.forEach(item => {
+        .then((data) => {
+          data.forEach((item) => {
             contributorsData = contributorsData.concat(item.data);
             if (item.headers.link) {
               const formattedURL = formatURL(item.headers.link, item.config.url);
@@ -55,8 +60,8 @@ const actions = {
           const secondPromiseArray = contributorsUrl.map(fetchURL);
 
           Promise.all(secondPromiseArray)
-            .then(resp => {
-              resp.forEach(item => {
+            .then((resp) => {
+              resp.forEach((item) => {
                 contributorsData = contributorsData.concat(item.data);
               });
               addDataToLocalStorage(contributorsData, 'contributorsData', 'contributors');
@@ -77,100 +82,117 @@ const actions = {
   },
   sortByContributors({ commit }) {
     if (
-      state.sortByContributorsArrow === '' ||
-      state.sortByContributorsArrow === 'mdi-arrow-down'
+      state.sortByContributorsArrow === ''
+      || state.sortByContributorsArrow === 'mdi-arrow-down'
     ) {
       const sortedContributors = state.contributors.sort(
         (a, b) => b.contributions - a.contributions
       );
 
-      commit('setContributors', sortedContributors);
+      const paginatedContributors = paginateTotalPage(sortedContributors, state.selectedPage);
+      commit('setPaginatedContributors', paginatedContributors);
+      commit('setsortByGistsArrow', '');
+      commit('setSortByFollowersArrow', '');
+      commit('setSortByRepositoryArrow', '');
       commit('setSortByContributorsArrow', 'mdi-arrow-up');
     } else {
       const sortedContributors = state.contributors.sort(
         (a, b) => a.contributions - b.contributions
       );
 
-      commit('setContributors', sortedContributors);
+      const paginatedContributors = paginateTotalPage(sortedContributors, state.selectedPage);
+      commit('setPaginatedContributors', paginatedContributors);
+      commit('setsortByGistsArrow', '');
+      commit('setSortByFollowersArrow', '');
+      commit('setSortByRepositoryArrow', '');
       commit('setSortByContributorsArrow', 'mdi-arrow-down');
     }
   },
   sortByGists({ commit }) {
-    if (
-      state.sortByGistsArrow === '' ||
-      state.sortByGistsArrow === 'mdi-arrow-down'
-    ) {
-      const sortedContributors = state.contributors.sort(
-        (a, b) => b.public_gists - a.public_gists
-      );
+    if (state.sortByGistsArrow === '' || state.sortByGistsArrow === 'mdi-arrow-down') {
+      const sortedContributors = state.contributors.sort((a, b) => b.public_gists - a.public_gists);
 
-      commit('setContributors', sortedContributors);
+      const paginatedContributors = paginateTotalPage(sortedContributors, state.selectedPage);
+      commit('setPaginatedContributors', paginatedContributors);
+      commit('setSortByContributorsArrow', '');
+      commit('setSortByFollowersArrow', '');
+      commit('setSortByRepositoryArrow', '');
       commit('setsortByGistsArrow', 'mdi-arrow-up');
     } else {
-      const sortedContributors = state.contributors.sort(
-        (a, b) => a.public_gists - b.public_gists
-      );
+      const sortedContributors = state.contributors.sort((a, b) => a.public_gists - b.public_gists);
 
-      commit('setContributors', sortedContributors);
+      const paginatedContributors = paginateTotalPage(sortedContributors, state.selectedPage);
+      commit('setPaginatedContributors', paginatedContributors);
+      commit('setSortByContributorsArrow', '');
+      commit('setSortByFollowersArrow', '');
+      commit('setSortByRepositoryArrow', '');
       commit('setsortByGistsArrow', 'mdi-arrow-down');
     }
   },
   sortByFollowers({ commit }) {
-    if (
-      state.sortByFollowersArrow === '' ||
-      state.sortByFollowersArrow === 'mdi-arrow-down'
-    ) {
-      const sortedContributors = state.contributors.sort(
-        (a, b) => b.followers - a.followers
-      );
+    if (state.sortByFollowersArrow === '' || state.sortByFollowersArrow === 'mdi-arrow-down') {
+      const sortedContributors = state.contributors.sort((a, b) => b.followers - a.followers);
 
-      commit('setContributors', sortedContributors);
+      const paginatedContributors = paginateTotalPage(sortedContributors, state.selectedPage);
+      commit('setPaginatedContributors', paginatedContributors);
+      commit('setsortByGistsArrow', '');
+      commit('setSortByContributorsArrow', '');
+      commit('setSortByRepositoryArrow', '');
       commit('setSortByFollowersArrow', 'mdi-arrow-up');
     } else {
-      const sortedContributors = state.contributors.sort(
-        (a, b) => a.followers - b.followers
-      );
+      const sortedContributors = state.contributors.sort((a, b) => a.followers - b.followers);
 
-      commit('setContributors', sortedContributors);
+      const paginatedContributors = paginateTotalPage(sortedContributors, state.selectedPage);
+      commit('setPaginatedContributors', paginatedContributors);
+      commit('setsortByGistsArrow', '');
+      commit('setSortByContributorsArrow', '');
+      commit('setSortByRepositoryArrow', '');
       commit('setSortByFollowersArrow', 'mdi-arrow-down');
     }
   },
   sortByRepository({ commit }) {
-    
-    if (
-      state.sortByRepositoryArrow === '' ||
-      state.sortByRepositoryArrow === 'mdi-arrow-down'
-    ) {
-      const sortedContributors = state.contributors.sort(
-        (a, b) => b.public_repos - a.public_repos
-      );
+    if (state.sortByRepositoryArrow === '' || state.sortByRepositoryArrow === 'mdi-arrow-down') {
+      const sortedContributors = state.contributors.sort((a, b) => b.public_repos - a.public_repos);
 
-      commit('setContributors', sortedContributors);
+      const paginatedContributors = paginateTotalPage(sortedContributors, state.selectedPage);
+      commit('setPaginatedContributors', paginatedContributors);
+      commit('setsortByGistsArrow', '');
+      commit('setSortByContributorsArrow', '');
+      commit('setSortByFollowersArrow', '');
       commit('setSortByRepositoryArrow', 'mdi-arrow-up');
     } else {
-      const sortedContributors = state.contributors.sort(
-        (a, b) => a.public_repos - b.public_repos
-      );
+      const sortedContributors = state.contributors.sort((a, b) => a.public_repos - b.public_repos);
 
-      commit('setContributors', sortedContributors);
+      const paginatedContributors = paginateTotalPage(sortedContributors, state.selectedPage);
+      commit('setPaginatedContributors', paginatedContributors);
+      commit('setsortByGistsArrow', '');
+      commit('setSortByContributorsArrow', '');
+      commit('setSortByFollowersArrow', '');
       commit('setSortByRepositoryArrow', 'mdi-arrow-down');
     }
-  }
+  },
+  paginateContributors({ commit }, newPage) {
+    const paginatedContributors = paginateTotalPage(state.contributors, newPage);
+    commit('setPaginatedContributors', paginatedContributors);
+  },
+  selectPage({ commit }, page) {
+    commit('setSelectedPage', page);
+  },
 };
 
 const mutations = {
   setContributors: (state, contributors) => (state.contributors = contributors),
-  setSortByContributorsArrow: (state, sortByContributorsArrow) =>
-    (state.sortByContributorsArrow = sortByContributorsArrow),
+  setPaginatedContributors: (state, paginatedContributors) => (state.paginatedContributors = paginatedContributors),
+  setSortByContributorsArrow: (state, sortByContributorsArrow) => (state.sortByContributorsArrow = sortByContributorsArrow),
   setsortByGistsArrow: (state, sortByGistsArrow) => (state.sortByGistsArrow = sortByGistsArrow),
   setSortByFollowersArrow: (state, sortByFollowersArrow) => (state.sortByFollowersArrow = sortByFollowersArrow),
   setSortByRepositoryArrow: (state, sortByRepositoryArrow) => (state.sortByRepositoryArrow = sortByRepositoryArrow),
-
+  setSelectedPage: (state, selectedPage) => (state.selectedPage = selectedPage),
 };
 
 export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
 };
