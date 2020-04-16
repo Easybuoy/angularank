@@ -61,10 +61,10 @@ import Divider from '@/components/common/Divider.vue';
 export default {
   name: 'Home',
   computed: {
-    ...mapGetters(['allContributors', 'paginatedContributors', 'loading', 'error'])
+    ...mapGetters(['allContributors', 'paginatedContributors', 'loading', 'error']),
   },
   methods: {
-    ...mapActions(['getContributors'])
+    ...mapActions(['getContributors']),
   },
   created() {
     this.getContributors();
@@ -74,8 +74,8 @@ export default {
     Spinner,
     Error,
     Pagination,
-    Divider
-  }
+    Divider,
+  },
 };
 </script>
 

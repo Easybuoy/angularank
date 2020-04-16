@@ -29,10 +29,12 @@ const actions = {
           })
           .catch(() => {
             commit('setError', 'Error geting details');
+            commit('setLoading');
           });
       })
       .catch(() => {
         commit('setError', 'Error geting details');
+        commit('setLoading');
       });
   },
 };

@@ -6,7 +6,7 @@ import {
   getItemFromLocalStorage,
   addDataToLocalStorage,
   getContributorsDetail,
-  paginateTotalPage
+  paginateTotalPage,
 } from '../../utils';
 
 const state = {
@@ -16,17 +16,17 @@ const state = {
   sortByFollowersArrow: '',
   sortByGistsArrow: '',
   sortByRepositoryArrow: '',
-  selectedPage: 1
+  selectedPage: 1,
 };
 
 const getters = {
-  allContributors: currentState => currentState.contributors,
-  paginatedContributors: currentState => currentState.paginatedContributors,
-  sortByContributorsArrow: currentState => currentState.sortByContributorsArrow,
-  sortByGistsArrow: currentState => currentState.sortByGistsArrow,
-  sortByRepositoryArrow: currentState => currentState.sortByRepositoryArrow,
-  sortByFollowersArrow: currentState => currentState.sortByFollowersArrow,
-  selectedPage: currentState => currentState.selectedPage
+  allContributors: (currentState) => currentState.contributors,
+  paginatedContributors: (currentState) => currentState.paginatedContributors,
+  sortByContributorsArrow: (currentState) => currentState.sortByContributorsArrow,
+  sortByGistsArrow: (currentState) => currentState.sortByGistsArrow,
+  sortByRepositoryArrow: (currentState) => currentState.sortByRepositoryArrow,
+  sortByFollowersArrow: (currentState) => currentState.sortByFollowersArrow,
+  selectedPage: (currentState) => currentState.selectedPage,
 };
 
 const actions = {
@@ -49,8 +49,8 @@ const actions = {
       let contributorsData = [];
       let remainingContributorsListURL = [];
       Promise.all(promiseArray)
-        .then(data => {
-          data.forEach(item => {
+        .then((data) => {
+          data.forEach((item) => {
             contributorsData = contributorsData.concat(item.data);
             if (item.headers.link) {
               const formattedURL = formatURL(item.headers.link, item.config.url);
@@ -60,8 +60,8 @@ const actions = {
           const secondPromiseArray = contributorsUrl.map(fetchURL);
 
           Promise.all(secondPromiseArray)
-            .then(resp => {
-              resp.forEach(item => {
+            .then((resp) => {
+              resp.forEach((item) => {
                 contributorsData = contributorsData.concat(item.data);
               });
               addDataToLocalStorage(contributorsData, 'contributorsData', 'contributors');
@@ -82,8 +82,8 @@ const actions = {
   },
   sortByContributors({ commit }) {
     if (
-      state.sortByContributorsArrow === '' ||
-      state.sortByContributorsArrow === 'mdi-arrow-down'
+      state.sortByContributorsArrow === ''
+      || state.sortByContributorsArrow === 'mdi-arrow-down'
     ) {
       const sortedContributors = state.contributors.sort(
         (a, b) => b.contributions - a.contributions
@@ -177,26 +177,22 @@ const actions = {
   },
   selectPage({ commit }, page) {
     commit('setSelectedPage', page);
-  }
+  },
 };
 
 const mutations = {
   setContributors: (state, contributors) => (state.contributors = contributors),
-  setPaginatedContributors: (state, paginatedContributors) =>
-    (state.paginatedContributors = paginatedContributors),
-  setSortByContributorsArrow: (state, sortByContributorsArrow) =>
-    (state.sortByContributorsArrow = sortByContributorsArrow),
+  setPaginatedContributors: (state, paginatedContributors) => (state.paginatedContributors = paginatedContributors),
+  setSortByContributorsArrow: (state, sortByContributorsArrow) => (state.sortByContributorsArrow = sortByContributorsArrow),
   setsortByGistsArrow: (state, sortByGistsArrow) => (state.sortByGistsArrow = sortByGistsArrow),
-  setSortByFollowersArrow: (state, sortByFollowersArrow) =>
-    (state.sortByFollowersArrow = sortByFollowersArrow),
-  setSortByRepositoryArrow: (state, sortByRepositoryArrow) =>
-    (state.sortByRepositoryArrow = sortByRepositoryArrow),
-  setSelectedPage: (state, selectedPage) => (state.selectedPage = selectedPage)
+  setSortByFollowersArrow: (state, sortByFollowersArrow) => (state.sortByFollowersArrow = sortByFollowersArrow),
+  setSortByRepositoryArrow: (state, sortByRepositoryArrow) => (state.sortByRepositoryArrow = sortByRepositoryArrow),
+  setSelectedPage: (state, selectedPage) => (state.selectedPage = selectedPage),
 };
 
 export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
 };

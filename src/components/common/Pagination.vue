@@ -22,21 +22,21 @@ export default {
   name: 'Pagination',
   data: () => ({
     totalPages: 1,
-    customSelectedPage: 1
+    customSelectedPage: 1,
   }),
   props: {
     contributors: {
       type: Array,
-      required: true
+      required: true,
     },
     page: {
       type: Number,
       required: true,
-      default: 1
-    }
+      default: 1,
+    },
   },
   computed: {
-    ...mapGetters(['allContributors', 'paginatedContributors', 'selectedPage'])
+    ...mapGetters(['allContributors', 'paginatedContributors', 'selectedPage']),
   },
   mounted() {
     this.selectPage(this.page);
@@ -45,16 +45,15 @@ export default {
     this.totalPages = totalPage;
   },
   methods: {
-    ...mapActions(['paginateContributors', 'selectPage'])
+    ...mapActions(['paginateContributors', 'selectPage']),
   },
   watch: {
     customSelectedPage(newPage) {
       this.selectPage(newPage);
-      console.log(this.selectedPage)
       this.customSelectedPage = this.selectedPage;
       this.paginateContributors(newPage);
-    }
-  }
+    },
+  },
 };
 </script>
 
