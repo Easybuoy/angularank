@@ -63,10 +63,10 @@ import Footer from '@/components/common/Footer.vue';
 export default {
   name: 'Home',
   computed: {
-    ...mapGetters(['allContributors', 'paginatedContributors', 'loading', 'error'])
+    ...mapGetters(['allContributors', 'paginatedContributors', 'loading', 'error']),
   },
   methods: {
-    ...mapActions(['getContributors'])
+    ...mapActions(['getContributors']),
   },
   created() {
     this.getContributors();
@@ -77,8 +77,8 @@ export default {
     Error,
     Pagination,
     Divider,
-    Footer
-  }
+    Footer,
+  },
 };
 </script>
 
