@@ -26,7 +26,10 @@
             <Divider />
           </div>
 
-          <div class="full-width" v-show="repoDetail.homepage !== '' && repoDetail.homepage !== null">
+          <div
+            class="full-width"
+            v-show="repoDetail.homepage !== '' && repoDetail.homepage !== null"
+          >
             <h4 class="user-detail-container list-item grey--text text--darken-2">
               <span class="red--text text--darken-4">Homepage:&nbsp;</span>
               {{ repoDetail.homepage }}
@@ -125,6 +128,8 @@
         </div>
       </v-row>
     </v-container>
+
+    <Footer />
   </div>
 </template>
 
@@ -134,6 +139,7 @@ import moment from 'moment';
 import Divider from '@/components/common/Divider.vue';
 import Spinner from '@/components/common/Spinner.vue';
 import Error from '@/components/common/Error.vue';
+import Footer from '@/components/common/Footer.vue';
 
 export default {
   name: 'Repository_Detail',
@@ -157,7 +163,9 @@ export default {
       this.pushed_at = moment(date).fromNow();
     },
   },
-  components: { Divider, Spinner, Error },
+  components: {
+    Divider, Spinner, Error, Footer,
+  },
 };
 </script>
 

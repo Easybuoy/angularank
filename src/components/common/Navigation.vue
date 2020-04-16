@@ -18,7 +18,7 @@
       <v-divider></v-divider>
 
       <v-list nav dense>
-        <v-list-item-group active-class="deep-purple--text text--accent-4">
+        <v-list-item-group active-class="red--text text--accent-4">
           <v-list-item v-for="item in navItems" :key="item.id">
             <router-link :to="item.link" style="color: inherit">
               <v-list-item-icon>
