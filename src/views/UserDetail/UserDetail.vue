@@ -78,7 +78,7 @@
               <Divider />
             </div>
 
-            <div class="full-width" v-show=" userDetail.blog !== ''">
+            <div class="full-width" v-show="userDetail.blog !== ''">
               <h4 class="user-detail-container list-item grey--text text--darken-2">
                 <span class="red--text text--darken-4">Blog:&nbsp;</span>
                 {{ userDetail.blog }}
@@ -127,7 +127,14 @@
       </div>
     </div>
 
-    <Repositories v-if="loading === false" :repositories="repositories" :login="userDetail.login" :loading="loading" />
+    <Repositories
+      v-if="loading === false"
+      :repositories="repositories"
+      :login="userDetail.login"
+      :loading="loading"
+    />
+
+    <Footer />
   </div>
 </template>
 
@@ -136,26 +143,26 @@ import { mapGetters, mapActions } from 'vuex';
 import Spinner from '@/components/common/Spinner.vue';
 import Divider from '@/components/common/Divider.vue';
 import Repositories from '@/components/Repositories/Repositories.vue';
+import Footer from '@/components/common/Footer.vue';
 
 export default {
   name: 'User-Details',
   created() {
     const { login } = this.$route.params;
     this.getUserDetail(login);
-
-    console.log(this.userDetail, 'userd');
   },
   computed: {
-    ...mapGetters(['userDetail', 'loading', 'error', 'repositories'])
+    ...mapGetters(['userDetail', 'loading', 'error', 'repositories']),
   },
   methods: {
-    ...mapActions(['getUserDetail'])
+    ...mapActions(['getUserDetail']),
   },
   components: {
     Spinner,
     Divider,
-    Repositories
-  }
+    Repositories,
+    Footer,
+  },
 };
 </script>
 
@@ -218,8 +225,8 @@ export default {
 
     background-color: white;
     padding: 1rem;
-    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
-      0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14),
+      0px 1px 5px 0px rgba(0, 0, 0, 0.12);
 
     .user-title {
       font-family: 'Concert One', cursive;

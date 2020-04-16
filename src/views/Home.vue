@@ -46,6 +46,7 @@
     </v-container>
 
     <Pagination :contributors="allContributors" :page="1" />
+    <Footer />
   </div>
 </template>
 
@@ -57,6 +58,7 @@ import Sort from '@/components/common/Sort.vue';
 import Error from '@/components/common/Error.vue';
 import Pagination from '@/components/common/Pagination.vue';
 import Divider from '@/components/common/Divider.vue';
+import Footer from '@/components/common/Footer.vue';
 
 export default {
   name: 'Home',
@@ -75,6 +77,7 @@ export default {
     Error,
     Pagination,
     Divider,
+    Footer,
   },
 };
 </script>

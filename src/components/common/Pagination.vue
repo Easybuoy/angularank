@@ -1,11 +1,11 @@
 <template>
-  <div class="text-center">
+  <div class="text-center mb-5">
     <a href="#top">
       <v-pagination
         v-if="contributors.length > 0"
         v-model="customSelectedPage"
         :length="totalPages"
-        :total-visible="5"
+        :total-visible="10"
         prev-icon="mdi-menu-left"
         next-icon="mdi-menu-right"
       ></v-pagination>
